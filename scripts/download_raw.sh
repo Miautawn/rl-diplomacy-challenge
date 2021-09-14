@@ -5,7 +5,7 @@ cd "$(dirname "$0")"
 cd .. 
 
 #run the dvc to download the zip file
-dvc pull
+dvc pull -r dropbox
 
 #unzip the downloaded zip containing all the files
 unzip data/raw_data/diplomacy-v1-27k-msgs.zip -d data/raw_data/
