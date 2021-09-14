@@ -1,0 +1,46 @@
+schema: '2.0'
+stages:
+  download_zip:
+    cmd: curl -L "https://www.dropbox.com/s/if42duiggv5am29/diplomacy-v1-27k-msgs.zip?dl=1"
+      -o raw.zip
+    outs:
+    - path: raw.zip
+      md5: d9abaec879ed8cbf011913e0004fe4dd
+      size: 1384320614
+  extract_zip:
+    cmd: mkdir -p data/raw && unzip raw.zip -d data/raw/ && rm raw.zip
+    outs:
+    - path: data/raw/other_maps.jsonl
+      md5: dd5f97935f8f193046e6d95307120d1b
+      size: 2451447433
+    - path: data/raw/standard_no_press.jsonl
+      md5: 927d533beb6f3413fa0e5c72a882e248
+      size: 2848794440
+    - path: data/raw/standard_press_with_msgs.jsonl
+      md5: 4c31562d87cd83996c05b1487cf18d1e
+      size: 7543605
+    - path: data/raw/standard_press_without_msgs.jsonl
+      md5: bb0fac4376187051f48007363a99455d
+      size: 9747936623
+    - path: data/raw/standard_public_press.jsonl
+      md5: 496a6aeb5420c76352082684e725a2fa
+      size: 6624662
+  download_extract_zip:
+    cmd: curl -L "https://www.dropbox.com/s/if42duiggv5am29/diplomacy-v1-27k-msgs.zip?dl=1"
+      -o raw.zip && mkdir -p data/raw && unzip raw.zip -d data/raw/ && rm raw.zip
+    outs:
+    - path: data/raw/other_maps.jsonl
+      md5: dd5f97935f8f193046e6d95307120d1b
+      size: 2451447433
+    - path: data/raw/standard_no_press.jsonl
+      md5: 927d533beb6f3413fa0e5c72a882e248
+      size: 2848794440
+    - path: data/raw/standard_press_with_msgs.jsonl
+      md5: 4c31562d87cd83996c05b1487cf18d1e
+      size: 7543605
+    - path: data/raw/standard_press_without_msgs.jsonl
+      md5: bb0fac4376187051f48007363a99455d
+      size: 9747936623
+    - path: data/raw/standard_public_press.jsonl
+      md5: 496a6aeb5420c76352082684e725a2fa
+      size: 6624662
