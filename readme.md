@@ -1,3 +1,3 @@
 To get started and reproduce:
 
-1. Run `dvc retro`
+1. Run `dvc repro`
