@@ -8,4 +8,3 @@
 3. Commit the changes
 4. Update the GithubPages branch by runing: ```ghp-import -n -p -f _build/html```
 5. Reward yourself with some cheese :)
-
