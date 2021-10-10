@@ -4,5 +4,7 @@
 format: jb-book
 root: pages/intro
 chapters:
+- file: pages/from_data_to_output
+- file: pages/input_representation
+- file: pages/input_encoding
 - file: pages/markdown
-- file: pages/notebooks
