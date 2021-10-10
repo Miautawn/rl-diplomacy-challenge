@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome to your Jupyter Book &#8212; My sample book</title>
+    <title>RL Diplomacy Challenge jupyter book environment &#8212; My sample book</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -51,7 +51,6 @@
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Markdown Files" href="markdown.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -86,21 +85,31 @@
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
         <ul class="nav bd-sidenav">
- <li class="toctree-l1 current">
-  <a class="reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pages/intro.html">
    Welcome to your Jupyter Book
   </a>
  </li>
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="markdown.html">
-   Markdown Files
+  <a class="reference internal" href="pages/from_data_to_output.html">
+   From input to output
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="notebooks.html">
-   Content with notebooks
+  <a class="reference internal" href="pages/input_representation.html">
+   Input representation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pages/input_encoding.html">
+   Input Encoding
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pages/markdown.html">
+   Markdown Files
   </a>
  </li>
 </ul>
@@ -144,7 +153,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="_sources/intro.md"><button type="button"
+        <a class="dropdown-buttons" href="_sources/README.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -164,7 +173,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fintro.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FREADME.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -185,6 +194,19 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-to-work-it">
+   How to work it
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -193,20 +215,18 @@
         
               <div>
                 
-  <div class="section" id="welcome-to-your-jupyter-book">
-<h1>Welcome to your Jupyter Book<a class="headerlink" href="#welcome-to-your-jupyter-book" title="Permalink to this headline">¶</a></h1>
-<p>This is a small sample book to give you a feel for how book content is
-structured.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Here is a note!</p>
-</div>
-<p>And here is a code block:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">e</span> <span class="o">=</span> <span class="n">mc</span><span class="o">^</span><span class="mi">2</span>
-</pre></div>
-</div>
-<p>Check out the content pages bundled with this sample book to see more.</p>
-<div class="toctree-wrapper compound">
+  <div class="section" id="rl-diplomacy-challenge-jupyter-book-environment">
+<h1>RL Diplomacy Challenge jupyter book environment<a class="headerlink" href="#rl-diplomacy-challenge-jupyter-book-environment" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="how-to-work-it">
+<h2>How to work it<a class="headerlink" href="#how-to-work-it" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>Pull this branch</p></li>
+<li><p>Make changes</p></li>
+<li><p>Build the book by runing: <code class="docutils literal notranslate"><span class="pre">jupyter-book</span> <span class="pre">build</span> <span class="pre">.</span></code></p></li>
+<li><p>Commit the changes</p></li>
+<li><p>Update the GithubPages branch by runing: <code class="docutils literal notranslate"><span class="pre">ghp-import</span> <span class="pre">-n</span> <span class="pre">-p</span> <span class="pre">-f</span> <span class="pre">_build/html</span></code></p></li>
+<li><p>Reward yourself with some cheese :)</p></li>
+</ol>
 </div>
 </div>
 
@@ -239,15 +259,6 @@ structured.</p>
 
 <div class='prev-next-bottom'>
     
-     <div id="next">
-        <a class="right-next" href="markdown.html" title="next page">
-            <div class="prevnext-info">
-                <p class="prevnext-label">next</p>
-                <p class="prevnext-title">Markdown Files</p>
-            </div>
-            <i class="prevnext-label fas fa-angle-right"></i>
-        </a>
-     </div>
 
 </div>
         
