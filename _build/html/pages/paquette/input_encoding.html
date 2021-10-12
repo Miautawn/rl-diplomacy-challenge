@@ -1,0 +1,440 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Input Encoding &#8212; RL Diplomacy Challenge</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Learning to Play No Press Diplomacy with Best Response Policy Iteration (NeurIPS, 2020)" href="../anthony/anthony.html" />
+    <link rel="prev" title="Input representation" href="input_representation.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">RL Diplomacy Challenge</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="paquette.html">
+   No Press Diplomacy: Modeling Multi-Agent Gameplay (NeurIPS, 2019)
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="input_representation.html">
+     Input representation
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Input Encoding
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../anthony/anthony.html">
+   Learning to Play No Press Diplomacy with Best Response Policy Iteration (NeurIPS, 2020)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../anthony/input_representation.html">
+     Input representation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../anthony/input_encoding.html">
+     Input Encoding
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../gray/gray.html">
+   Human-Level Performance in No-Press Diplomacy via Equilibrium Search (ICLR, 2021)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gray/input_representation.html">
+     Input representation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gray/input_encoding.html">
+     Input Encoding
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../bakhtin/bakhtin.html">
+   No-Press Diplomacy from Scratch (NeurIPS, 2021)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../bakhtin/input_representation.html">
+     Input representation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../bakhtin/input_encoding.html">
+     Input Encoding
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../markdown.html">
+   Markdown Files
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/pages/paquette/input_encoding.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/executablebooks/jupyter-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fpages/paquette/input_encoding.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#encoding-process">
+   Encoding process
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="input-encoding">
+<h1>Input Encoding<a class="headerlink" href="#input-encoding" title="Permalink to this headline">¶</a></h1>
+<p>As it is common with many ML tasks, before fitting the model, we need to transform the data in some way or another. In Reinforcement Learning, this tasks is known as encoding and can be completely custom to your particular task.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A simple example of data encoding would be the use of Convolutional Neural Networks to process the raw pixel data from images when we want to train Reinforcement Learning algorihtms on video games for instance.</p>
+</div>
+<p>The authors of the paper used their own graph convolution-based encoder which takes the board or order representations described earlier and transforms them using:</p>
+<ul class="simple">
+<li><p>Graph Convolutional Layer</p></li>
+<li><p>BatchNormalization</p></li>
+<li><p>FiLM</p></li>
+<li><p>ReLU</p></li>
+</ul>
+<p>At the end we are left with final provice embeddings which will be used to get outputs.</p>
+<p>Let’s take a look at the encoding process with the board state. Previous phase orders are encoded in the exact same manner.</p>
+<div class="section" id="encoding-process">
+<h2>Encoding process<a class="headerlink" href="#encoding-process" title="Permalink to this headline">¶</a></h2>
+<p>Graph based encoder was chosen in order to take advanteage of the adjacency information of the game map. Since graph neural networks work with data relationship by design and many of the GNN algorithms use neighbouring information for the encoding process, using graph based encoder seems to make sense.</p>
+<p>To begin with, let’s establish some notation:<br />
+<span class="math notranslate nohighlight">\(  x_{b o}^{l}  \)</span> - is the board state embedding produced by layer <em>l</em><br />
+<span class="math notranslate nohighlight">\(  x_{p o}^{l}  \)</span> - is the previous orders embedding produced by layer <em>l</em></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The layer here refers to a encoding block, which as described earlier consits of:</p>
+<ul class="simple">
+<li><p>Graph Convolutional Layer</p></li>
+<li><p>BatchNormalization</p></li>
+<li><p>FiLM</p></li>
+<li><p>ReLU</p></li>
+</ul>
+<p>Thus we can reuse this block and run the board state or previous orders embeddings multiple times through it.
+The original paper did 16 such loops!</p>
+</div>
+<p>Now before everything, our <span class="math notranslate nohighlight">\(  x_{b o}^{0}  \)</span> and <span class="math notranslate nohighlight">\(  x_{p o}^{0}  \)</span> will of course be our original board state and previous orders representations, which we disscussed in the previous page. Let’s continue with the board state only for now (remeber, the process is exact for the orders).</p>
+<p>We start our encoding by aggregating neighbour information, which is a key trait of most GNN:<br />
+<span class="math notranslate nohighlight">\(
+y_{b o}^{l}=\operatorname{Batch} \operatorname{Norm}\left(A x_{b o}^{l} W_{b o}+b_{b o}\right)
+\)</span></p>
+<p>Here:<br />
+<span class="math notranslate nohighlight">\( A \)</span> - is a normalized map 81x81 adjeceny matrix (the map has 81 provinces)<br />
+<span class="math notranslate nohighlight">\( W_{b o} \)</span> - is the weight matrix<br />
+<span class="math notranslate nohighlight">\( b_{b o} \)</span> - is the bias term</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>The *BathNorm* is operated on the last dimension (??????????)
+</pre></div>
+</div>
+<p>Now, we perform additional conditional batch normalization using FiLM. According to the authors, it was used in order to fuse multimodal information, which FiLM layers excel at. The batch normalization parameters <span class="math notranslate nohighlight">\( \gamma_{b o} \)</span> and <span class="math notranslate nohighlight">\( \beta_{b o} \)</span>, which allow the model to choose optimal distributions for hidden layers are conditioned on the player’s power <strong>p</strong> and the current season <strong>s</strong>.<br />
+<span class="math notranslate nohighlight">\(
+\gamma_{b o}, \beta_{b o}=f_{b o}^{l}([p ; s]) 
+\)</span><br />
+Here <span class="math notranslate nohighlight">\( f^{l} \)</span> is a linear transformation.</p>
+<p>The FiLM works simply by applying the simple affine transformation:<br />
+<span class="math notranslate nohighlight">\(
+z_{b o}^{l}=y_{b o}^{l} \odot \gamma_{b o}+\beta_{b o}
+\)</span><br />
+Both Hadamard product (element-wise multiplication) and additional are broadcast across provinces.</p>
+<p>Finally, we add non-linear transformation in a form of ReLU with residual connections:<br />
+<span class="math notranslate nohighlight">\(
+x_{b o}^{l+1}= \begin{cases}\operatorname{Re} L U\left(z_{b o}^{l}\right)+x_{b o}^{l} &amp; d^{l}=d_{b o}^{l+1} \\ \operatorname{Re} L U\left(z_{b o}^{l}\right) &amp; d_{b o}^{l} \neq d_{b o}^{l+1}\end{cases}
+\)</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>I don&#39;t understand what d is, it&#39;s never explained, or maybe I am blind!
+</pre></div>
+</div>
+<p>And that’s it, we produced the board state embedding!<br />
+Again, this process can now be repeated to get more representative embeddings.</p>
+<p>Finally, after running the <span class="math notranslate nohighlight">\( x_{b o} \)</span> and <span class="math notranslate nohighlight">\( x_{p o} \)</span> through L (just a number) encoding blocks, we concatenate them together to form the final embeddings:<br />
+<span class="math notranslate nohighlight">\(
+h_{e n c}=\left[x_{b o}^{L}, x_{p o}^{L}\right]
+\)</span></p>
+<p>So now, <span class="math notranslate nohighlight">\( h_{e n c}^{i} \)</span> is a final embeding for the <em>i’th</em> province.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./pages/paquette"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="input_representation.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">Input representation</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="../anthony/anthony.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title">Learning to Play No Press Diplomacy with Best Response Policy Iteration (NeurIPS, 2020)</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Martynas Jašinskas, Jev Gamper<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

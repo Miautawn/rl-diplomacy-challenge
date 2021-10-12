@@ -4,7 +4,23 @@
 format: jb-book
 root: pages/intro
 chapters:
-- file: pages/from_data_to_output
-- file: pages/input_representation
-- file: pages/input_encoding
+- file: pages/paquette/paquette
+  sections:
+  - file: pages/paquette/input_representation
+  - file: pages/paquette/input_encoding
+
+- file: pages/anthony/anthony
+  sections:
+  - file: pages/anthony/input_representation
+  - file: pages/anthony/input_encoding
+
+- file: pages/gray/gray
+  sections:
+  - file: pages/gray/input_representation
+  - file: pages/gray/input_encoding
+
+- file: pages/bakhtin/bakhtin
+  sections:
+  - file: pages/bakhtin/input_representation
+  - file: pages/bakhtin/input_encoding
 - file: pages/markdown

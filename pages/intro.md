@@ -1,7 +1,7 @@
-# Welcome to your Jupyter Book
+# Introduction
 
-This is a small sample book to give you a feel for how book content is
-structured.
+This is a small book that will help you to get started with training your own
+reinforcement learning agents to play No Press Diplomacy!
 
 :::{note}
 Here is a note!
