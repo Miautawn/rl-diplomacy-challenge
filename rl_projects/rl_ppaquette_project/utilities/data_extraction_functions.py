@@ -6,7 +6,7 @@ from utilities.utility_functions import (get_map_powers, get_top_victors,
                    GO_ID, order_to_ix, get_board_alignments,
                    get_order_based_mask, get_issued_orders_for_powers,
                    get_possible_orders_for_powers, get_order_tokens, POWER_VOCABULARY_KEY_TO_IX,
-                   get_current_season)
+                   get_current_season, compress_dict, decompress_dict)
 
 from settings import (MODEL_DATA_PATHS, MODEL_DATA_DIR,
                     EXTRACTED_DATA_DIR, VALIDATION_SET_SPLIT,
@@ -389,6 +389,37 @@ def get_moves_info(saved_game, moves):
                 moves[order][is_no_press] += 1
                 
     return moves
+
+def compress_game(game_object):
+    """
+    Convert a game object to compressed string
+    """
+    
+    # convert np.arrays to list in order to serialize them
+    for idx, phase in enumerate(game_object["phases"]):
+        if(type(phase["state"]["board_state"]) != list):
+            game_object["phases"][idx]["state"]["board_state"] = phase["state"]["board_state"].tolist()
+
+        if(type(phase["previous_orders_state"]) != list):
+            game_object["phases"][idx]["previous_orders_state"] = phase["previous_orders_state"].tolist()
+
+    #returns encoded game bytes as a string
+    encoded_game = compress_dict(game_object)
+    return str(encoded_game)
+
+
+def decompress_game(game_bytes_string, convertable_columns = []):
+    """
+    Convert a compressed string back to game object
+    """
+    game = decompress_dict(game_bytes_string, convertable_columns)
+
+    #for faster use, convert lists to np.arrays
+    for idx, phase in enumerate(game["phases"]):
+        game["phases"][idx]["state"]["board_state"] = np.array(phase["state"]["board_state"])
+        game["phases"][idx]["previous_orders_state"] = np.array(phase["previous_orders_state"])
+
+    return game
             
             
 
