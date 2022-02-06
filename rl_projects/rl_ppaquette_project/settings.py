@@ -43,7 +43,7 @@ EXTRACTED_DATA_DIR = "./data/raw"
 MODEL_DATA_DIR = "./data/model_data"
 
 MODEL_DATA_PATHS = {
-    "MAIN_DATASET_PATH": os.path.join(MODEL_DATA_DIR, "full_dataset.txt"),
+    "UNPROCESSED_DATASET_PATH": os.path.join(MODEL_DATA_DIR, "unprocessed_dataset.txt"),
     "DATASET_INDEX_PATH" : os.path.join(MODEL_DATA_DIR, "dataset_index.pickle"),
     "END_SCS_DATASET_PATH" :  os.path.join(MODEL_DATA_DIR, "end_scs.pickle"),
     "HASH_DATASET_PATH" :  os.path.join(MODEL_DATA_DIR, "hash.pickle"),

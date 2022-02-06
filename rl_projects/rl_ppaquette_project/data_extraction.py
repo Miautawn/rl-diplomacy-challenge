@@ -44,7 +44,6 @@ def process_game(line):
     saved_game = add_cached_states_to_saved_game(saved_game)
     saved_game = add_possible_orders_to_saved_game(saved_game)
     saved_game = add_rewards_to_saved_game(saved_game, DefaultRewardFunction())
-
     return saved_game["id"], saved_game
 
 
@@ -74,7 +73,7 @@ def main():
     i = 0
     # main data extraction loop
     with concurrent.futures.ProcessPoolExecutor() as executor:
-        with open(MODEL_DATA_PATHS["MAIN_DATASET_PATH"], "w") as main_dataset:
+        with open(MODEL_DATA_PATHS["UNPROCESSED_DATASET_PATH"], "w") as main_dataset:
             for json_file_path in glob.glob(EXTRACTED_DATA_DIR + '/*.jsonl'):
                 file_category = json_file_path.split('/')[-1].split('.')[0]
                 dataset_index[file_category] = set()
@@ -87,7 +86,7 @@ def main():
                         if game_id is None:
                             continue
 
-                        if i >= 30:
+                        if i >= 1000:
                             break
                             
                         i+=1

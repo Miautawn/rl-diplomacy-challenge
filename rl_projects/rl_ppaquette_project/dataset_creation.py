@@ -113,7 +113,7 @@ def main():
     train_buffer, valid_buffer = Queue(), Queue()
 
     # Opening the proto file to read games
-    full_dataset = open(MODEL_DATA_PATHS["MAIN_DATASET_PATH"], "r")
+    full_dataset = open(MODEL_DATA_PATHS["UNPROCESSED_DATASET_PATH"], "r")
     n_items_being_processed = 0
 
     # Creating training and validation dataset
