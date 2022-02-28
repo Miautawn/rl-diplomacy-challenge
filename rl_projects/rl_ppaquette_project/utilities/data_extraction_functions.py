@@ -1,5 +1,9 @@
+import logging
+import pickle
+
 from diplomacy import Game, Map
 import numpy as np
+
 
 from utilities.utility_functions import (get_map_powers, get_top_victors,
                    get_sorted_locs, ALL_STANDARD_POWERS,
@@ -16,6 +20,9 @@ from settings import (MODEL_DATA_PATHS, MODEL_DATA_DIR,
                     N_UNIT_TYPES, N_NODES,
                     TOKENS_PER_ORDER, MAX_LENGTH_ORDER_PREV_PHASES,
                     MAX_CANDIDATES, N_PREV_ORDERS, N_PREV_ORDERS_HISTORY)
+
+
+LOGGER = logging.getLogger(__name__)
 
 def convert_to_board_representation(state, map_object):
     """ Converts a `.proto.game.State` proto to its matrix board state representation

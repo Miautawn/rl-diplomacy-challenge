@@ -34,6 +34,8 @@ TOKENS_PER_ORDER, MAX_LENGTH_ORDER_PREV_PHASES,
 MAX_CANDIDATES, N_PREV_ORDERS, N_PREV_ORDERS_HISTORY)
 
 
+LOGGER = logging.getLogger(__name__)
+
 def process_game(line):
     """ Process a line in the .jsonl file
         :return: A tuple (game_id, saved_game_zlib)
@@ -48,8 +50,6 @@ def process_game(line):
 
 
 def main():
-    
-    LOGGER = logging.getLogger()
     
     #making a dir for extracted data if it does not exits
     if not os.path.isdir(MODEL_DATA_DIR):
@@ -86,10 +86,10 @@ def main():
                         if game_id is None:
                             continue
 
-                        if i >= 1000:
-                            break
-                            
-                        i+=1
+#                         if i >= 1000:
+#                             break
+#                         i+=1
+                        
                         main_dataset.write(compress_game(saved_game) + "\n")
 
                         # Recording additional info

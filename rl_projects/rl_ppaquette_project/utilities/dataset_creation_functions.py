@@ -1,5 +1,6 @@
-import numpy as np
+import logging
 
+import numpy as np
 from diplomacy import Game, Map
 
 from utilities.utility_functions import (get_map_powers, get_top_victors,
@@ -27,6 +28,7 @@ TOKENS_PER_ORDER, MAX_LENGTH_ORDER_PREV_PHASES,
 MAX_CANDIDATES, N_PREV_ORDERS, N_PREV_ORDERS_HISTORY, DATA_BLUEPRINT)
 
 
+LOGGER = logging.getLogger(__name__)
 
 def get_request_id(saved_game, phase_idx, power_name, is_validation_set):
     """ Returns the standardized request id for this game/phase """
@@ -188,6 +190,7 @@ def get_policy_data(saved_game, power_names, top_victors):
 
             # Saving results
             # No need to return temperature, current_power, current_season
+           
             policy_data[phase_idx][power_name] = {'board_state': phase_board_state,
                                                  'board_alignments': phase_board_alignments,
                                                  'prev_orders_state': prev_orders_state,

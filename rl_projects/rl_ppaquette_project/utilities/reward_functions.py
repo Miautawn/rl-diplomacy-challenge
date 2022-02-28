@@ -1,12 +1,19 @@
+
+import logging
+from enum import Enum
+from abc import ABCMeta, abstractmethod
+
+from diplomacy import Game, Map
+
+from utilities.utility_functions import ALL_STANDARD_POWERS
+
+
+
 # --- Defaults ---
 DEFAULT_PENALTY = 0.
 DEFAULT_GAMMA = 0.99
 
-from utilities.utility_functions import ALL_STANDARD_POWERS
-from enum import Enum
-from abc import ABCMeta, abstractmethod
-from diplomacy import Game, Map
-
+LOGGER = logging.getLogger(__name__)
 
 class DoneReason(Enum):
     """ Enumeration of reasons why the environment has terminated """

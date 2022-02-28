@@ -2,6 +2,7 @@ from operator import itemgetter
 from collections import OrderedDict
 import zlib
 import json
+import logging
 
 import numpy as np
 
@@ -11,6 +12,8 @@ N_LOCATION_FEATURES, N_ORDERS_FEATURES,
 N_POWERS, N_SEASONS, N_UNIT_TYPES, N_NODES,
 TOKENS_PER_ORDER, MAX_LENGTH_ORDER_PREV_PHASES,
 MAX_CANDIDATES, N_PREV_ORDERS, N_PREV_ORDERS_HISTORY)
+
+LOGGER = logging.getLogger(__name__)
 
 ALL_STANDARD_POWERS = ['AUSTRIA', 'ENGLAND', 'FRANCE', 'GERMANY', 'ITALY', 'RUSSIA', 'TURKEY']
 
