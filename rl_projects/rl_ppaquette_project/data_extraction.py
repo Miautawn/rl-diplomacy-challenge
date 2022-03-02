@@ -59,7 +59,7 @@ def main():
     
     # defining some parameters which are required for data construction
     map_object = Map()
-    all_powers = get_map_powers(map_object)
+    all_powers = get_map_powers(map_object) #CHANGE THIS TO ALL_STANDARD_POWERS!!!!
     supply_centers_to_win = len(map_object.scs) // 2 + 1
 
     # defining iterables that will hold information which will be extracted & exported

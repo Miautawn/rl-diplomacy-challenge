@@ -362,9 +362,9 @@ def get_end_scs_info(saved_game, game_id, all_powers, supply_centers_to_win, end
     """ Records the ending supply center information """
     # Only keeping games with the standard map (or its variations) that don't use BUILD_ANY
     if not saved_game["map"].startswith('standard'):
-        return
+        return end_supply_centers
     if 'BUILD_ANY' in saved_game["rules"]:
-        return
+        return end_supply_centers
 
     # Detecting if no press
     is_no_press = 'NO_PRESS' in saved_game["rules"]
@@ -372,10 +372,18 @@ def get_end_scs_info(saved_game, game_id, all_powers, supply_centers_to_win, end
     # Counting the nunmber of ending scs for each power
     for power_name in all_powers:
         n_of_supply_centers = min(supply_centers_to_win, len(saved_game["phases"][-1]["state"]["centers"].get(power_name, [])))
-        if is_no_press:
-            end_supply_centers['no_press'][power_name][n_of_supply_centers] += [game_id]
-        else:
-            end_supply_centers['press'][power_name][n_of_supply_centers] += [game_id]
+        try:
+            
+            if is_no_press:
+                end_supply_centers['no_press'][power_name][n_of_supply_centers] += [game_id]
+            else:
+                end_supply_centers['press'][power_name][n_of_supply_centers] += [game_id]
+        except:
+            
+            print(f"game id: {game_id}")
+            print(f"supply centers: {end_supply_centers['no_press']}")
+            print(f"n_supply: {n_of_supply_centers}")
+            print(f"combined: {end_supply_centers['no_press'][power_name][n_of_supply_centers]}")
             
     return end_supply_centers
 
@@ -383,7 +391,7 @@ def get_moves_info(saved_game, moves):
     """ Recording the frequency of each order """
     # Only keeping games with the standard map (or its variations)
     if not saved_game["map"].startswith('standard'):
-        return
+        return moves
 
     # Detecting if no press
     is_no_press = 'NO_PRESS' in saved_game["rules"]
