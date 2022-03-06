@@ -52,7 +52,7 @@ MODEL_DATA_PATHS = {
     
     "TRAINING_DATASET_PATH": os.path.join(MODEL_DATA_DIR, "full_dataset_training.txt"),
     "VALIDATION_DATASET_PATH": os.path.join(MODEL_DATA_DIR, "full_dataset_validation.txt"),
-    "INDEX_DATASET_PATH": os.path.join(MODEL_DATA_DIR, "full_dataset_index.pickle")
+    "TRAIN_VAL_DATA_COUNTS": os.path.join(MODEL_DATA_DIR, "full_dataset_train_val_counts.pickle")
 }
 
 
