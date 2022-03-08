@@ -62,7 +62,7 @@ def decompress_dict(dict_bytes_string, convertable_columns = []):
 
     dict_object = json.loads(zlib.decompress(dict_bytes).decode("utf-8"))
     
-    # convert each np.ndarray to list within the dict  
+    # convert each list within the dict to np.array if it's in convertable_columns  
     def deep_search(converted_dict):
         for key, value in converted_dict.items():
             if isinstance(value, dict):
