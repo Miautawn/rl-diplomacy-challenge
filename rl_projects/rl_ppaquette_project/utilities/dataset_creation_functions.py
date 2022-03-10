@@ -1,4 +1,5 @@
 import logging
+import pickle
 
 import numpy as np
 from diplomacy import Game, Map
@@ -224,6 +225,13 @@ def format_datapoint(data):
             padded_feature = np.array(data[feature_name])
             padded_feature = np.resize(padded_feature, feature_structure["shape"])
             data[feature_name] = padded_feature.tolist() if data_type == list else padded_feature
+            
+        ## EXCEPTION!!! REPLACE!!
+        ## In the original code they convert numpy arrays to bytes, which 
+        ## does not retain structure information, thus causes flattening on "board alignments" feature
+        ## Here we do it artificially
+        if feature_name == "board_alignments":
+            data[feature_name] = sum(data[feature_name], [])
             
     return data
 
