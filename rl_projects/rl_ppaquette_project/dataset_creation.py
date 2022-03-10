@@ -42,7 +42,7 @@ def process_sample(compressed_game_string):
             for power_name in game_results[phase_idx]:
                 _, game_result = game_results[phase_idx][power_name]
                 results.append((is_validation_sample, power_name, game_result))
-        return results
+        return (saved_game["id"], results)
     except Exception as exc:
         raise exc
         
@@ -87,19 +87,21 @@ with concurrent.futures.ProcessPoolExecutor() as executor:
             local_buffer.append(all_samples.readline())
             
         # process the datapoints stored in the buffer
-        for processed_datapoint in executor.map(process_sample, local_buffer):
+        for processed_sample in executor.map(process_sample, local_buffer):
             
+            game_id, processed_datapoints = processed_sample
             # each game sample produces results for each phase and power
-            for is_validation_sample, power_name, game_result in processed_datapoint:
+            for is_validation_datapoint, power_name, game_result in processed_datapoints:
                 if game_result is not None:
                     
-                    if(is_validation_sample):
+                    if(is_validation_datapoint):
                         valid_dataset.write(compress_dict(game_result) + "\n")
                         dataset_index['size_valid_dataset'] += 1
-                    train_dataset.write(compress_dict(game_result) + "\n")
-                    dataset_index['size_train_dataset'] += 1
+                    else:
+                        train_dataset.write(compress_dict(game_result) + "\n")
+                        dataset_index['size_train_dataset'] += 1
                     
-                progress_bar.update(1)
+            progress_bar.update(phase_count_dataset.get(game_id))
             pending_samples -= 1
             
         # free the memory of the buffer
