@@ -1,5 +1,4 @@
 import logging
-import pickle
 
 import numpy as np
 from diplomacy import Game, Map
@@ -176,7 +175,7 @@ def get_policy_data(saved_game, power_names, top_victors):
                     continue
 
                 # Computing the candidates
-                candidates = [get_order_based_mask(adj_orders)] * decoder_length
+                candidates = get_order_based_mask(adj_orders) * decoder_length
 
             # Regular phase - Compute candidates for each issued order location 
             else:
@@ -187,7 +186,7 @@ def get_policy_data(saved_game, power_names, top_victors):
                 
                 candidates = []
                 for loc in orderable_locations:
-                    candidates += [get_order_based_mask(phase_possible_orders[loc])]
+                    candidates += get_order_based_mask(phase_possible_orders[loc])
 
             # Saving results
             # No need to return temperature, current_power, current_season
