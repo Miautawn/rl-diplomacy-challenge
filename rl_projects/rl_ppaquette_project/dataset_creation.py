@@ -22,7 +22,8 @@ N_LOCATION_FEATURES, N_ORDERS_FEATURES,
 N_POWERS, N_SEASONS,
 N_UNIT_TYPES, N_NODES,
 TOKENS_PER_ORDER, MAX_LENGTH_ORDER_PREV_PHASES,
-MAX_CANDIDATES, N_PREV_ORDERS, N_PREV_ORDERS_HISTORY)
+MAX_CANDIDATES, N_PREV_ORDERS, N_PREV_ORDERS_HISTORY,
+DATASET_CREATION_NUM_WORKERS, DATASET_CREATION_BUFFER_SIZE)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -69,7 +70,6 @@ train_dataset = open(MODEL_DATA_PATHS["TRAINING_DATASET_PATH"], "w")
 valid_dataset = open(MODEL_DATA_PATHS["VALIDATION_DATASET_PATH"], "w")
 
 
-DEFAULT_BUFFER_SAMPLE_SIZE = 2000  # define this according to your RAM
 current_samples = 0
 pending_samples = len(game_ids)
 pending_phases = sum(phase_count_dataset.get(game_id, 0) for game_id in game_ids)
@@ -77,12 +77,12 @@ pending_phases = sum(phase_count_dataset.get(game_id, 0) for game_id in game_ids
 progress_bar = tqdm(total=pending_phases)
 
 # main loop
-with concurrent.futures.ProcessPoolExecutor() as executor:
+with concurrent.futures.ProcessPoolExecutor(max_workers=DATASET_CREATION_NUM_WORKERS) as executor:
     while pending_samples != 0:
         
         # reading in compressed samples to the buffer
         local_buffer = []
-        local_buffer_size = min(pending_samples, DEFAULT_BUFFER_SAMPLE_SIZE)
+        local_buffer_size = min(pending_samples, DATASET_CREATION_BUFFER_SIZE)
         for i in range(local_buffer_size):
             local_buffer.append(all_samples.readline())
             

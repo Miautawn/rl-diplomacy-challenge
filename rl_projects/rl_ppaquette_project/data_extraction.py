@@ -31,7 +31,8 @@ N_LOCATION_FEATURES, N_ORDERS_FEATURES,
 N_POWERS, N_SEASONS,
 N_UNIT_TYPES, N_NODES,
 TOKENS_PER_ORDER, MAX_LENGTH_ORDER_PREV_PHASES,
-MAX_CANDIDATES, N_PREV_ORDERS, N_PREV_ORDERS_HISTORY)
+MAX_CANDIDATES, N_PREV_ORDERS, N_PREV_ORDERS_HISTORY,
+DATA_EXTRACTION_NUM_WORKERS, DATA_EXTRACTION_BUFFER_SIZE)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -59,7 +60,7 @@ def main():
     
     # defining some parameters which are required for data construction
     map_object = Map()
-    all_powers = get_map_powers(map_object) #CHANGE THIS TO ALL_STANDARD_POWERS!!!!
+    all_powers = get_map_powers(map_object)
     supply_centers_to_win = len(map_object.scs) // 2 + 1
 
     # defining iterables that will hold information which will be extracted & exported
@@ -67,29 +68,42 @@ def main():
     hash_table = {} # zobrist_hash: [{game_id}/{phase_name}]
     moves = {} # Moves frequency: {move: [n_no_press, n_press]}
     n_phases = OrderedDict() # n of phases per game
-    end_supply_centers = {'press': {power_name: {n_sc: [] for n_sc in range(0, supply_centers_to_win + 1)} for power_name in all_powers},
-                           'no_press': {power_name: {n_sc: [] for n_sc in range(0, supply_centers_to_win + 1)} for power_name in all_powers}}
+    end_supply_centers = {'press': {
+                                power_name: {n_sc: [] for n_sc in range(0, supply_centers_to_win + 1)}
+                                for power_name in all_powers},
+                           'no_press': {
+                               power_name: {n_sc: [] for n_sc in range(0, supply_centers_to_win + 1)}
+                               for power_name in all_powers}}
     
-    i = 0
+    
+    # opening files for writing extracted/processed data
+    main_dataset = open(MODEL_DATA_PATHS["UNPROCESSED_DATASET_PATH"], "w")
+    
+    progress_bar = tqdm()
+    
     # main data extraction loop
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        with open(MODEL_DATA_PATHS["UNPROCESSED_DATASET_PATH"], "w") as main_dataset:
-            for json_file_path in glob.glob(EXTRACTED_DATA_DIR + '/*.jsonl'):
-                file_category = json_file_path.split('/')[-1].split('.')[0]
-                dataset_index[file_category] = set()
+    with concurrent.futures.ProcessPoolExecutor(max_workers=DATA_EXTRACTION_NUM_WORKERS) as executor:
+        for json_file_path in glob.glob(EXTRACTED_DATA_DIR + '/*.jsonl'):
+            file_category = json_file_path.split('/')[-1].split('.')[0]
+            dataset_index[file_category] = set()
 
-                with open(json_file_path, 'r') as json_file:
-                    lines = json_file.read().splitlines()
-                    
-                    for game_id, saved_game in tqdm(executor.map(process_game, lines), total=len(lines)):
+            with open(json_file_path, 'r') as json_file:
+                while True:
+
+                    # reading in lines to the buffer
+                    local_buffer = []
+                    for i in range(DATA_EXTRACTION_BUFFER_SIZE):
+                        local_buffer.append(json_file.readline())
+                        
+                    # checking if all buffer is empty (meaning we finished reading the file)
+                    if(not any(local_buffer)):
+                        break
+
+                    for game_id, saved_game in executor.map(process_game, local_buffer):
 
                         if game_id is None:
                             continue
 
-#                         if i >= 1000:
-#                             break
-#                         i+=1
-                        
                         main_dataset.write(compress_game(saved_game) + "\n")
 
                         # Recording additional info
@@ -103,6 +117,8 @@ def main():
                             hash_table.setdefault(phase["state"]["zobrist_hash"], [])
                             hash_table[phase["state"]["zobrist_hash"]] += ['{}/{}'.format(game_id, phase["name"])]
                             
+                        progress_bar.update(1)
+                            
                             
     # Storing info to disk
     pickle.dump(dataset_index, open(MODEL_DATA_PATHS["DATASET_INDEX_PATH"], "wb"))
@@ -110,7 +126,10 @@ def main():
     pickle.dump(hash_table, open(MODEL_DATA_PATHS["HASH_DATASET_PATH"], "wb"))
     pickle.dump(moves, open(MODEL_DATA_PATHS["MOVES_COUNT_DATASET_PATH"], "wb"))
     pickle.dump(n_phases, open(MODEL_DATA_PATHS["PHASES_COUNT_DATASET_PATH"], "wb"))
-
+    
+    # closing files
+    main_dataset.close()
+    progress_bar.close()
     
 
 if __name__ == "__main__":
