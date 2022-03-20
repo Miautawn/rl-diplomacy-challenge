@@ -1,5 +1,68 @@
 import os
 
+#####################
+##
+## DATA PROCESSING SETTINGS
+## 
+## These settings controll multiprocessing when extracting the data
+## or creating the datasets. You should set them depending on your machine.
+## These settings are provided, since by using concurrent processes,
+## a bottleneck on data consumption (writing to dick) may appear,
+## thus exploding the RAM!!!
+##
+## The default provided settings were used with a 4 core CPU and 15GB RAM.
+#####################
+
+# number of cpu workers to run concurrently when extracting the data
+# None = use all!
+DATA_EXTRACTION_NUM_WORKERS = None
+
+# the buffer size for extracting the data
+DATA_EXTRACTION_BUFFER_SIZE = 6000
+
+# number of cpu workers to run concurrently when creating a dataset
+# None = use all!
+DATASET_CREATION_NUM_WORKERS = None
+
+# the buffer size for creating a dataset
+DATASET_CREATION_BUFFER_SIZE = 3000
+
+
+#####################
+##
+## DATA PATH SETTINGS
+##
+## These settings simply tell where to store processable data / datasets.
+#####################
+
+# where are the extracted .jsonl files
+EXTRACTED_DATA_DIR = "./data/raw"
+
+# where the processed files should go
+MODEL_DATA_DIR = "./data/model_data"
+
+# all model-data related paths
+MODEL_DATA_PATHS = {
+    "UNPROCESSED_DATASET_PATH": os.path.join(MODEL_DATA_DIR, "unprocessed_dataset.txt"),
+    "DATASET_INDEX_PATH" : os.path.join(MODEL_DATA_DIR, "dataset_index.pickle"),
+    "END_SCS_DATASET_PATH" :  os.path.join(MODEL_DATA_DIR, "end_scs.pickle"),
+    "HASH_DATASET_PATH" :  os.path.join(MODEL_DATA_DIR, "hash.pickle"),
+    "MOVES_COUNT_DATASET_PATH" :  os.path.join(MODEL_DATA_DIR, "moves_count.pickle"),
+    "PHASES_COUNT_DATASET_PATH" :  os.path.join(MODEL_DATA_DIR, "phases_count.pickle"),
+    
+    "TRAINING_DATASET_PATH": os.path.join(MODEL_DATA_DIR, "full_dataset_training.txt"),
+    "VALIDATION_DATASET_PATH": os.path.join(MODEL_DATA_DIR, "full_dataset_validation.txt"),
+    "TRAIN_VAL_DATA_COUNTS": os.path.join(MODEL_DATA_DIR, "full_dataset_train_val_counts.pickle")
+}
+
+
+#####################
+##
+## DATA FEATURE SETTINGS
+##
+## Settings for processing the data and creating the datasets.
+## These are borrowed from the original dataset.
+#####################
 N_LOCATIONS = 81
 N_SUPPLY_CENTERS = 34
 N_LOCATION_FEATURES = 35
@@ -50,21 +113,17 @@ DATA_BLUEPRINT = {
 }
 
 
-EXTRACTED_DATA_DIR = "./data/raw"
-MODEL_DATA_DIR = "./data/model_data"
+#####################
+##
+## TRAINING HYPERPARAMETER SETTINGS
+##
+## training/model related hyperparameters.
+#####################
+VALIDATION_SET_SPLIT = 0.05
 
-MODEL_DATA_PATHS = {
-    "UNPROCESSED_DATASET_PATH": os.path.join(MODEL_DATA_DIR, "unprocessed_dataset.txt"),
-    "DATASET_INDEX_PATH" : os.path.join(MODEL_DATA_DIR, "dataset_index.pickle"),
-    "END_SCS_DATASET_PATH" :  os.path.join(MODEL_DATA_DIR, "end_scs.pickle"),
-    "HASH_DATASET_PATH" :  os.path.join(MODEL_DATA_DIR, "hash.pickle"),
-    "MOVES_COUNT_DATASET_PATH" :  os.path.join(MODEL_DATA_DIR, "moves_count.pickle"),
-    "PHASES_COUNT_DATASET_PATH" :  os.path.join(MODEL_DATA_DIR, "phases_count.pickle"),
-    
-    "TRAINING_DATASET_PATH": os.path.join(MODEL_DATA_DIR, "full_dataset_training.txt"),
-    "VALIDATION_DATASET_PATH": os.path.join(MODEL_DATA_DIR, "full_dataset_validation.txt"),
-    "TRAIN_VAL_DATA_COUNTS": os.path.join(MODEL_DATA_DIR, "full_dataset_train_val_counts.pickle")
-}
+
+
+
 
 
 

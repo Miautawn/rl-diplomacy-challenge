@@ -175,7 +175,7 @@ def get_policy_data(saved_game, power_names, top_victors):
                     continue
 
                 # Computing the candidates
-                candidates = [get_order_based_mask(adj_orders)] * decoder_length
+                candidates = get_order_based_mask(adj_orders) * decoder_length
 
             # Regular phase - Compute candidates for each issued order location 
             else:
@@ -186,7 +186,7 @@ def get_policy_data(saved_game, power_names, top_victors):
                 
                 candidates = []
                 for loc in orderable_locations:
-                    candidates += [get_order_based_mask(phase_possible_orders[loc])]
+                    candidates += get_order_based_mask(phase_possible_orders[loc])
 
             # Saving results
             # No need to return temperature, current_power, current_season
@@ -224,6 +224,13 @@ def format_datapoint(data):
             padded_feature = np.array(data[feature_name])
             padded_feature = np.resize(padded_feature, feature_structure["shape"])
             data[feature_name] = padded_feature.tolist() if data_type == list else padded_feature
+            
+        ## EXCEPTION!!! REPLACE!!
+        ## In the original code they convert numpy arrays to bytes, which 
+        ## does not retain structure information, thus causes flattening on "board alignments" feature
+        ## Here we do it artificially
+        if feature_name == "board_alignments":
+            data[feature_name] = sum(data[feature_name], [])
             
     return data
 

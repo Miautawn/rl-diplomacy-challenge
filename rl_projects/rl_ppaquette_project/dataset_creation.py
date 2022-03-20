@@ -22,7 +22,8 @@ N_LOCATION_FEATURES, N_ORDERS_FEATURES,
 N_POWERS, N_SEASONS,
 N_UNIT_TYPES, N_NODES,
 TOKENS_PER_ORDER, MAX_LENGTH_ORDER_PREV_PHASES,
-MAX_CANDIDATES, N_PREV_ORDERS, N_PREV_ORDERS_HISTORY)
+MAX_CANDIDATES, N_PREV_ORDERS, N_PREV_ORDERS_HISTORY,
+DATASET_CREATION_NUM_WORKERS, DATASET_CREATION_BUFFER_SIZE)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -42,7 +43,7 @@ def process_sample(compressed_game_string):
             for power_name in game_results[phase_idx]:
                 _, game_result = game_results[phase_idx][power_name]
                 results.append((is_validation_sample, power_name, game_result))
-        return results
+        return (saved_game["id"], results)
     except Exception as exc:
         raise exc
         
@@ -69,7 +70,6 @@ train_dataset = open(MODEL_DATA_PATHS["TRAINING_DATASET_PATH"], "w")
 valid_dataset = open(MODEL_DATA_PATHS["VALIDATION_DATASET_PATH"], "w")
 
 
-DEFAULT_BUFFER_SAMPLE_SIZE = 2000  # define this according to your RAM
 current_samples = 0
 pending_samples = len(game_ids)
 pending_phases = sum(phase_count_dataset.get(game_id, 0) for game_id in game_ids)
@@ -77,29 +77,31 @@ pending_phases = sum(phase_count_dataset.get(game_id, 0) for game_id in game_ids
 progress_bar = tqdm(total=pending_phases)
 
 # main loop
-with concurrent.futures.ProcessPoolExecutor() as executor:
+with concurrent.futures.ProcessPoolExecutor(max_workers=DATASET_CREATION_NUM_WORKERS) as executor:
     while pending_samples != 0:
         
         # reading in compressed samples to the buffer
         local_buffer = []
-        local_buffer_size = min(pending_samples, DEFAULT_BUFFER_SAMPLE_SIZE)
+        local_buffer_size = min(pending_samples, DATASET_CREATION_BUFFER_SIZE)
         for i in range(local_buffer_size):
             local_buffer.append(all_samples.readline())
             
         # process the datapoints stored in the buffer
-        for processed_datapoint in executor.map(process_sample, local_buffer):
+        for processed_sample in executor.map(process_sample, local_buffer):
             
+            game_id, processed_datapoints = processed_sample
             # each game sample produces results for each phase and power
-            for is_validation_sample, power_name, game_result in processed_datapoint:
+            for is_validation_datapoint, power_name, game_result in processed_datapoints:
                 if game_result is not None:
                     
-                    if(is_validation_sample):
+                    if(is_validation_datapoint):
                         valid_dataset.write(compress_dict(game_result) + "\n")
                         dataset_index['size_valid_dataset'] += 1
-                    train_dataset.write(compress_dict(game_result) + "\n")
-                    dataset_index['size_train_dataset'] += 1
+                    else:
+                        train_dataset.write(compress_dict(game_result) + "\n")
+                        dataset_index['size_train_dataset'] += 1
                     
-                progress_bar.update(1)
+            progress_bar.update(phase_count_dataset.get(game_id))
             pending_samples -= 1
             
         # free the memory of the buffer

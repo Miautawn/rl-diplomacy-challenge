@@ -337,7 +337,7 @@ def get_board_alignments(locs, in_adjustment_phase, tokens_per_loc, decoder_leng
         LOGGER.warning('Got %d alignments, but decoder length is %d', len(alignments), decoder_length)
 
     # Returning
-    return np.array(alignments)
+    return alignments
 
 
 
