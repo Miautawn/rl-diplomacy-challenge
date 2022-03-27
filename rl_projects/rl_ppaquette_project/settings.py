@@ -63,20 +63,22 @@ MODEL_DATA_PATHS = {
 ## Settings for processing the data and creating the datasets.
 ## These are borrowed from the original dataset.
 #####################
-N_LOCATIONS = 81
-N_SUPPLY_CENTERS = 34
-N_LOCATION_FEATURES = 35
-N_ORDERS_FEATURES = 40
-N_POWERS = 7
-N_SEASONS = 3
-N_UNIT_TYPES = 2
+DATA_FEATURES = {
+    "N_LOCATIONS": 81,
+    "N_SUPPLY_CENTERS": 34,
+    "N_LOCATION_FEATURES": 35,
+    "N_ORDERS_FEATURES": 40,
+    "N_POWERS": 7,
+    "N_SEASONS": 3,
+    "N_UNIT_TYPES": 2,
 
-N_NODES = N_LOCATIONS
-TOKENS_PER_ORDER = 5
-MAX_LENGTH_ORDER_PREV_PHASES = 350
-MAX_CANDIDATES = 240
-N_PREV_ORDERS = 1                  # We only feed the last movement phase
-N_PREV_ORDERS_HISTORY = 3          # We need to have an history of at least 3, to get at least 1 movement phase
+    "N_NODES": 81,                       # designed to be equal to N_LOCATIONS
+    "TOKENS_PER_ORDER": 5,
+    "MAX_LENGTH_ORDER_PREV_PHASES": 350,
+    "MAX_CANDIDATES": 240,
+    "N_PREV_ORDERS": 1,                  # We only feed the last movement phase
+    "N_PREV_ORDERS_HISTORY": 3,          # We need to have an history of at least 3, to get at least 1 movement phase
+}
 
 VALIDATION_SET_SPLIT = 0.05
 
