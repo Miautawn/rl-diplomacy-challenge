@@ -18,14 +18,7 @@ from utilities.data_extraction_functions import (convert_to_board_representation
                                                 get_end_scs_info, get_moves_info,
                                                 compress_game, decompress_game)
 
-from settings import (MODEL_DATA_PATHS, MODEL_DATA_DIR,
-EXTRACTED_DATA_DIR, VALIDATION_SET_SPLIT,
-N_LOCATIONS, N_SUPPLY_CENTERS,
-N_LOCATION_FEATURES, N_ORDERS_FEATURES,
-N_POWERS, N_SEASONS,
-N_UNIT_TYPES, N_NODES,
-TOKENS_PER_ORDER, MAX_LENGTH_ORDER_PREV_PHASES,
-MAX_CANDIDATES, N_PREV_ORDERS, N_PREV_ORDERS_HISTORY, DATA_BLUEPRINT)
+from settings import DATA_FEATURES, DATA_BLUEPRINT
 
 
 LOGGER = logging.getLogger(__name__)
@@ -65,11 +58,11 @@ def get_policy_data(saved_game, power_names, top_victors):
     for phase_idx in range(n_phases - 1):
 
         # Building a list of orders of previous phases
-        previous_orders_states = [np.zeros((N_NODES, N_ORDERS_FEATURES), dtype=np.uint8)] * N_PREV_ORDERS
-        for phase in saved_game["phases"][max(0, phase_idx - N_PREV_ORDERS_HISTORY):phase_idx]:
+        previous_orders_states = [np.zeros((DATA_FEATURES["N_NODES"], DATA_FEATURES["N_ORDERS_FEATURES"]), dtype=np.uint8)] * DATA_FEATURES["N_PREV_ORDERS"]
+        for phase in saved_game["phases"][max(0, phase_idx - DATA_FEATURES["N_PREV_ORDERS_HISTORY"]):phase_idx]:
             if phase["name"][-1] == 'M':
                 previous_orders_states += [convert_to_previous_orders_representation(phase, map_object)]
-        previous_orders_states = previous_orders_states[-N_PREV_ORDERS:]
+        previous_orders_states = previous_orders_states[-DATA_FEATURES["N_PREV_ORDERS"]:]
         prev_orders_state = np.array(previous_orders_states)
 
         # Parsing each requested power in the specified phase
@@ -150,7 +143,7 @@ def get_policy_data(saved_game, power_names, top_victors):
             decoder_inputs += [order_to_ix(phase_issued_orders[power_name][loc]) for loc in orderable_locations]
             if in_adjustment_phase and n_builds > 0:
                 decoder_inputs += [order_to_ix('WAIVE')] * (min(n_builds, n_homes) - len(orderable_locations))
-            decoder_length = min(decoder_length, N_SUPPLY_CENTERS)
+            decoder_length = min(decoder_length, DATA_FEATURES["N_SUPPLY_CENTERS"])
 
             # Adjustment Phase - Use all possible orders for each location.
             if in_adjustment_phase:

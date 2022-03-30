@@ -5,13 +5,10 @@ import json
 import logging
 
 import numpy as np
+import torch
 
 from diplomacy import Game, Map
-from settings import (N_LOCATIONS, N_SUPPLY_CENTERS,
-N_LOCATION_FEATURES, N_ORDERS_FEATURES,
-N_POWERS, N_SEASONS, N_UNIT_TYPES, N_NODES,
-TOKENS_PER_ORDER, MAX_LENGTH_ORDER_PREV_PHASES,
-MAX_CANDIDATES, N_PREV_ORDERS, N_PREV_ORDERS_HISTORY)
+from settings import DATA_FEATURES
 
 LOGGER = logging.getLogger(__name__)
 
@@ -35,6 +32,22 @@ STANDARD_TOPOLOGICAL_LOCATIONS  = ['YOR', 'EDI', 'LON', 'LVP', 'NTH', 'WAL', 'CL
 # Cache for adjacency matrix and sorted locs
 ADJACENCY_MATRIX = {}
 SORTED_LOCATIONS = {}
+
+def pad_tensor(tensor: torch.tensor, axis: int, min_size: int, pad_value = 0):
+    """pads the tensor axis with min_size ammount of pad_value"""
+    
+    new_axis = axis if axis >= 0 else len(tensor.shape) + axis
+    assert new_axis >= 0 and new_axis <= len(tensor.shape) - 1, \
+    f"Tensor with shape {tensor.shape} got invalid shape index {axis}"
+    
+    # check whether the tensor axis is already >= min_size
+    if tensor.shape[axis] >= min_size:
+        return tensor
+    
+    pad_structure = [0,0]*(len(tensor.shape) - new_axis)
+        
+    pad_structure[-1] = min_size - tensor.shape[new_axis]
+    return F.pad(tensor, tuple(pad_structure), value = pad_value)
 
 def compress_dict(dict_object):
     
@@ -304,7 +317,7 @@ def get_board_alignments(locs, in_adjustment_phase, tokens_per_loc, decoder_leng
     # Regular phase
     if not in_adjustment_phase:
         for loc in locs:
-            alignment = np.zeros([N_NODES], dtype=np.uint8).tolist()
+            alignment = np.zeros([DATA_FEATURES["N_NODES"]], dtype=np.uint8).tolist()
             alignment_index = ALIGNMENTS_INDEX.get(loc[:3], [])
             if loc[:3] not in ALIGNMENTS_INDEX:
                 LOGGER.warning('Location %s is not in the alignments index.', loc)
@@ -316,11 +329,11 @@ def get_board_alignments(locs, in_adjustment_phase, tokens_per_loc, decoder_leng
             LOGGER.warning('Got %d tokens, but decoder length is %d', len(locs) * tokens_per_loc, decoder_length)
         if decoder_length > len(alignments):
             LOGGER.warning('Got %d locs, but the decoder length is %d', len(locs), decoder_length)
-            alignments += [np.zeros([N_NODES], dtype=np.uint8).tolist()] * (decoder_length - len(alignments))
+            alignments += [np.zeros([DATA_FEATURES["N_NODES"]], dtype=np.uint8).tolist()] * (decoder_length - len(alignments))
 
     # Adjustment phase (All locs at all positions)
     else:
-        alignment = np.zeros([N_NODES], dtype=np.uint8).tolist()
+        alignment = np.zeros([DATA_FEATURES["N_NODES"]], dtype=np.uint8).tolist()
         alignment_index = set()
         for loc in locs:
             if loc[:3] not in ALIGNMENTS_INDEX:
@@ -576,7 +589,7 @@ GO_ID = token_to_ix(GO_TOKEN)
 EOS_ID = token_to_ix(EOS_TOKEN)
 DRAW_ID = token_to_ix(DRAW_TOKEN)
 
-def get_order_based_mask(list_possible_orders, max_length=MAX_CANDIDATES):
+def get_order_based_mask(list_possible_orders, max_length=DATA_FEATURES["MAX_CANDIDATES"]):
     """ Returns a list of candidates ids padded to the max length
         :param list_possible_orders: The list of possible orders (e.g. ['A PAR H', 'A PAR - BUR', ...])
         :return: A list of candidates padded. (e.g. [1, 50, 252, 0, 0, 0, ...])
