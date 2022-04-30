@@ -15,15 +15,12 @@ from utilities.dataset_creation_functions import (get_request_id,
 from utilities.data_extraction_functions import decompress_game
 from utilities.utility_functions import compress_dict, decompress_dict
 
-from settings import (MODEL_DATA_PATHS, MODEL_DATA_DIR,
-EXTRACTED_DATA_DIR, VALIDATION_SET_SPLIT,
-N_LOCATIONS, N_SUPPLY_CENTERS,
-N_LOCATION_FEATURES, N_ORDERS_FEATURES,
-N_POWERS, N_SEASONS,
-N_UNIT_TYPES, N_NODES,
-TOKENS_PER_ORDER, MAX_LENGTH_ORDER_PREV_PHASES,
-MAX_CANDIDATES, N_PREV_ORDERS, N_PREV_ORDERS_HISTORY,
-DATASET_CREATION_NUM_WORKERS, DATASET_CREATION_BUFFER_SIZE)
+from settings import (DATASET_CREATION_NUM_WORKERS, 
+                      DATASET_CREATION_BUFFER_SIZE,
+                      MODEL_DATA_PATHS,
+                      MODEL_DATA_DIR,
+                      DATA_FEATURES,
+                      H_PARAMS)
 
 LOGGER = logging.getLogger(__name__)
 

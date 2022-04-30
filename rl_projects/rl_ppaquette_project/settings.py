@@ -43,16 +43,16 @@ MODEL_DATA_DIR = "./data/model_data"
 
 # all model-data related paths
 MODEL_DATA_PATHS = {
-    "UNPROCESSED_DATASET_PATH": os.path.join(MODEL_DATA_DIR, "unprocessed_dataset.txt"),
-    "DATASET_INDEX_PATH" : os.path.join(MODEL_DATA_DIR, "dataset_index.pickle"),
-    "END_SCS_DATASET_PATH" :  os.path.join(MODEL_DATA_DIR, "end_scs.pickle"),
-    "HASH_DATASET_PATH" :  os.path.join(MODEL_DATA_DIR, "hash.pickle"),
-    "MOVES_COUNT_DATASET_PATH" :  os.path.join(MODEL_DATA_DIR, "moves_count.pickle"),
-    "PHASES_COUNT_DATASET_PATH" :  os.path.join(MODEL_DATA_DIR, "phases_count.pickle"),
+    "unprocessed_dataset_path": os.path.join(MODEL_DATA_DIR, "unprocessed_dataset.txt"),
+    "dataset_index_path" : os.path.join(MODEL_DATA_DIR, "dataset_index.pickle"),
+    "end_supply_center_dataset_path" :  os.path.join(MODEL_DATA_DIR, "end_scs.pickle"),
+    "hash_dataset_path" :  os.path.join(MODEL_DATA_DIR, "hash.pickle"),
+    "moves_count_dataset_path" :  os.path.join(MODEL_DATA_DIR, "moves_count.pickle"),
+    "phases_count_dataset_path" :  os.path.join(MODEL_DATA_DIR, "phases_count.pickle"),
     
-    "TRAINING_DATASET_PATH": os.path.join(MODEL_DATA_DIR, "full_dataset_training.txt"),
-    "VALIDATION_DATASET_PATH": os.path.join(MODEL_DATA_DIR, "full_dataset_validation.txt"),
-    "TRAIN_VAL_DATA_COUNTS": os.path.join(MODEL_DATA_DIR, "full_dataset_train_val_counts.pickle")
+    "training_dataset_path": os.path.join(MODEL_DATA_DIR, "full_dataset_training.txt"),
+    "validation_dataset_path": os.path.join(MODEL_DATA_DIR, "full_dataset_validation.txt"),
+    "train_validation_data_counts": os.path.join(MODEL_DATA_DIR, "full_dataset_train_val_counts.pickle")
 }
 
 
@@ -64,26 +64,26 @@ MODEL_DATA_PATHS = {
 ## These are borrowed from the original dataset.
 #####################
 DATA_FEATURES = {
-    "N_LOCATIONS": 81,
-    "N_SUPPLY_CENTERS": 34,
-    "N_LOCATION_FEATURES": 35,
-    "N_ORDERS_FEATURES": 40,
-    "N_POWERS": 7,
-    "N_SEASONS": 3,
-    "N_UNIT_TYPES": 2,
+    "n_locations": 81,
+    "n_supply_centers": 34,
+    "n_location_features": 35,
+    "n_orders_features": 40,
+    "n_powers": 7,
+    "n_seasons": 3,
+    "n_unit_types": 2,
 
-    "N_NODES": 81,                       # designed to be equal to N_LOCATIONS
-    "TOKENS_PER_ORDER": 5,
-    "MAX_LENGTH_ORDER_PREV_PHASES": 350,
-    "MAX_CANDIDATES": 240,
-    "N_PREV_ORDERS": 1,                  # We only feed the last movement phase
-    "N_PREV_ORDERS_HISTORY": 3,          # We need to have an history of at least 3, to get at least 1 movement phase
+    "n_nodes": 81,                       # designed to be equal to N_LOCATIONS
+    "tokens_per_order": 5,
+    "max_length_order_prev_phases": 350,
+    "max_candidates": 240,
+    "n_prev_orders": 1,                  # We only feed the last movement phase
+    "n_prev_orders_history": 3,          # We need to have an history of at least 3, to get at least 1 movement phase
 }
 
 VALIDATION_SET_SPLIT = 0.05
 
 
-# dictionary of your features and their 'default' states.
+# dictionary of your input features and their 'default' states.
 #
 # "static" means the feature has fixed length dimensions:
 # - if the shape is empty list: [], then the feature is a single scalar
@@ -121,7 +121,32 @@ DATA_BLUEPRINT = {
 ##
 ## training/model related hyperparameters.
 #####################
-VALIDATION_SET_SPLIT = 0.05
+H_PARAMETERS = {
+    'batch_size': 128,
+    'sync_gradients': True,
+    'avg_gradients': False,
+    'grad_aggregation': 'ADD_N',
+    'use_partitioner': False,
+    'use_verbs': False,
+    'learning_rate': 0.001,
+    'lr_decay_factor': 0.93,
+    'max_gradient_norm': 5.0,
+    'beam_width': 10,
+    'beam_groups': 5,
+    'dropout_rate': 0.5,
+    'use_v_dropout': True,
+    'perc_epoch_for_training': 1.0,
+    'early_stopping_stop_after': 5,
+    'policy_coeff': 1.0,
+    'n_graph_conv': 16,
+    'order_emb_size': 80,
+    'power_emb_size': 60,
+    'season_emb_size': 20,
+    'gcn_size': 120,
+    'lstm_size': 200,
+    'attn_size': 120,
+    'validation_set_split': 0.05,
+}
 
 
 

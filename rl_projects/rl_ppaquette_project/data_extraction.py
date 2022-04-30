@@ -24,15 +24,11 @@ from utilities.data_extraction_functions import (convert_to_board_representation
 
 from utilities.utility_functions import get_map_powers
 
-from settings import (MODEL_DATA_PATHS, MODEL_DATA_DIR,
-EXTRACTED_DATA_DIR, VALIDATION_SET_SPLIT,
-N_LOCATIONS, N_SUPPLY_CENTERS,
-N_LOCATION_FEATURES, N_ORDERS_FEATURES,
-N_POWERS, N_SEASONS,
-N_UNIT_TYPES, N_NODES,
-TOKENS_PER_ORDER, MAX_LENGTH_ORDER_PREV_PHASES,
-MAX_CANDIDATES, N_PREV_ORDERS, N_PREV_ORDERS_HISTORY,
-DATA_EXTRACTION_NUM_WORKERS, DATA_EXTRACTION_BUFFER_SIZE)
+from settings import (DATA_EXTRACTION_NUM_WORKERS, 
+                      DATA_EXTRACTION_BUFFER_SIZE,
+                      MODEL_DATA_DIR,
+                      DATA_FEATURES,
+                      H_PARAMS)
 
 
 LOGGER = logging.getLogger(__name__)
