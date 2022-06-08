@@ -261,4 +261,3 @@ class MixProportionalCustomIntUnitReward(AbstractRewardFunction):
 
 class DefaultRewardFunction(MixProportionalCustomIntUnitReward):
     """ Default reward function class """
-    # source code shows nothing else here :9

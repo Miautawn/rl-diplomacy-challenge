@@ -12,7 +12,14 @@ from utilities.utility_functions import (get_map_powers, get_top_victors,
                    get_possible_orders_for_powers, get_order_tokens, POWER_VOCABULARY_KEY_TO_IX,
                    get_current_season, compress_dict, decompress_dict)
 
-from settings import DATA_FEATURES
+from settings import (MODEL_DATA_PATHS, MODEL_DATA_DIR,
+                    EXTRACTED_DATA_DIR, VALIDATION_SET_SPLIT,
+                    N_LOCATIONS, N_SUPPLY_CENTERS,
+                    N_LOCATION_FEATURES, N_ORDERS_FEATURES,
+                    N_POWERS, N_SEASONS,
+                    N_UNIT_TYPES, N_NODES,
+                    TOKENS_PER_ORDER, MAX_LENGTH_ORDER_PREV_PHASES,
+                    MAX_CANDIDATES, N_PREV_ORDERS, N_PREV_ORDERS_HISTORY)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -48,10 +55,10 @@ def convert_to_board_representation(state, map_object):
     n_powers = len(powers)
 
     # Creating matrix components for locations according to the board representation matrix
-    locations_unit_type_matrix = np.zeros((n_locations, DATA_FEATURES["N_UNIT_TYPES"] + 1), dtype=np.uint8)
+    locations_unit_type_matrix = np.zeros((n_locations, N_UNIT_TYPES + 1), dtype=np.uint8)
     locations_unit_power_matrix = np.zeros((n_locations, n_powers + 1), dtype=np.uint8)
     locations_build_removable_matrix = np.zeros((n_locations, 2), dtype=np.uint8)
-    locations_dislodged_unit_type_matrix = np.zeros((n_locations, DATA_FEATURES["N_UNIT_TYPES"] + 1), dtype=np.uint8)
+    locations_dislodged_unit_type_matrix = np.zeros((n_locations, N_UNIT_TYPES + 1), dtype=np.uint8)
     locations_dislodged_unit_power_matrix = np.zeros((n_locations, n_powers + 1), dtype=np.uint8)
     locations_area_type_matrix = np.zeros((n_locations, 3), dtype=np.uint8)
     locations_supply_center_owner = np.zeros((n_locations, n_powers + 1), dtype=np.uint8)
@@ -194,10 +201,10 @@ def convert_to_previous_orders_representation(phase, map_object):
     # Not a movement phase
     if phase["name"][-1] != 'M':
         LOGGER.warning('Trying to compute the prev_orders_state of a non-movement phase.')
-        return np.zeros((DATA_FEATURES["N_LOCATIONS"], DATA_FEATURES["N_FEATURES"]), dtype=np.uint8)
+        return np.zeros((N_LOCATIONS, N_FEATURES), dtype=np.uint8)
 
     # Creating matrix components for locations
-    locations_unit_type_matrix = np.zeros((n_locations, DATA_FEATURES["N_UNIT_TYPES"] + 1), dtype=np.uint8)
+    locations_unit_type_matrix = np.zeros((n_locations, N_UNIT_TYPES + 1), dtype=np.uint8)
     locations_issuing_power_matrix = np.zeros((n_locations, n_powers + 1), dtype=np.uint8)
     locations_order_type_matrix = np.zeros((n_locations, 5), dtype=np.uint8)
     locations_source_power_matrix = np.zeros((n_locations, n_powers + 1), dtype=np.uint8)
