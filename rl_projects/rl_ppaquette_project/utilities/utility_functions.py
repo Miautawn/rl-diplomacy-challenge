@@ -27,7 +27,7 @@ def pad_tensor(tensor: torch.tensor, axis: int, min_size: int, pad_value = 0):
     pad_structure[-1] = min_size - tensor.shape[new_axis]
     return F.pad(tensor, tuple(pad_structure), value = pad_value)
 
-def compress_dict(dict_object):
+def compress_dict(dict_object: dict):
     """
         compresses a dict into a byte string encoded with zlib.
         Numpy arrays will be transformed to python lists.
@@ -50,7 +50,7 @@ def compress_dict(dict_object):
     return str(encoded_dict)   
 
 
-def decompress_dict(dict_bytes_string, numpy_arr_members = []):
+def decompress_dict(dict_bytes_string: str, numpy_arr_members: list = []):
     """
         Turns the zlib encoded dictionary byte string back to dictionary.
         Convertable columumns arguments holds the names of dict memebers that can
@@ -76,12 +76,17 @@ def decompress_dict(dict_bytes_string, numpy_arr_members = []):
     
     return dict_object
 
-def seeded_random(seeds, shape, generator = None):
+def seeded_random(seeds: torch.tensor, shape: tuple, generator: torch.Generator = None):
     """
-    generates random tensors according to the array of seeds
-    (e.g. same seeds generate the same tensor)
+    generates random tensors of uniform distribution from [0, 1)
+    according to the array of seeds (same seeds generate the same tensor)
     
-    Note: random states come from the pytorch random Generator,
+    Note #1: The seeds tensors is assumed to be 1D
+    
+    Note #2: The resulting shape of the tensor will be [len(seeds), shape]
+    (e.g. If the batch length of the seeds is 5, and the passed shape is [3], the the result shape is [5,3])
+    
+    Note #3: random states come from the pytorch random Generator,
     thus calling this function twice will provide different results
     with the same behaviour
     """
