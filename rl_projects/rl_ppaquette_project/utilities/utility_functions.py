@@ -76,4 +76,40 @@ def decompress_dict(dict_bytes_string, numpy_arr_members = []):
     
     return dict_object
 
+def seeded_random(seeds, shape, generator = None):
+    """
+    generates random tensors according to the array of seeds
+    (e.g. same seeds generate the same tensor)
+    
+    Note: random states come from the pytorch random Generator,
+    thus calling this function twice will provide different results
+    with the same behaviour
+    """
+    # find non-zero element indicies
+    non_zero_seed_indices = torch.nonzero(seeds)
+    
+    # add the batch dimension to the shape
+    shape.insert(0, seeds.shape[0])
+
+    if non_zero_seed_indices.numel() == 0:
+        # return random values if the tensor is a zero-tensor
+        mask = torch.rand(shape, generator = generator)
+    else:
+        # find unique non-zero seeds
+        mask = torch.empty(shape)
+        unique_seeds = torch.unique(torch.take(seeds, non_zero_seed_indices))
+
+        # add the same unique value for all the same non-zero seeds
+        for unique_seed in unique_seeds:
+            mask[seeds == unique_seed] = torch.rand(shape[1:], generator = generator)
+
+        # modify the final shape so it would fill the mask tensor
+        # with random tensors where the zero seeds would be
+        shape[0] = shape[0] - non_zero_seed_indices.shape[0]
+        
+        # add different random values for all zero seeds
+        mask[seeds == 0] = torch.rand(shape)
+        
+    return mask
+
 
