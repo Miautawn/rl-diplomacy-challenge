@@ -91,7 +91,7 @@ class Encoder(torch.nn.Module):
             (ORDER_VOCABULARY_SIZE, self.h_params["lstm_size"] + 1)
         ).uniform_(-1, 1)
 
-    def _postprocess_input(self, inputs: dict):
+    def _preprocess_input(self, inputs: dict):
         """
         Post-processes the inputs by reshaping, padding and casting some features
         """
@@ -171,8 +171,8 @@ class Encoder(torch.nn.Module):
 
     def forward(self, inputs: dict):
 
-        # ======== Feature post-processing ========
-        inputs = self._postprocess_input(inputs)
+        # ======== Feature pre-processing ========
+        inputs = self._preprocess_input(inputs)
 
         current_power = inputs["current_power"]
         current_season = inputs["current_season"]
@@ -267,6 +267,9 @@ class Encoder(torch.nn.Module):
         board_state_conv = torch.cat((board_state_0yr_conv, prev_ord_conv), dim=-1)
 
         return {
+            "player_seed": inputs["player_seed"],
+            "temperature": inputs["temperature"],
+            "dropout_rate": inputs["dropout_rate"],
             "board_alignments": inputs["board_alignments"],
             "decoder_inputs": inputs["decoder_inputs"],
             "raw_decoder_lengths": inputs["raw_decoder_lengths"],
