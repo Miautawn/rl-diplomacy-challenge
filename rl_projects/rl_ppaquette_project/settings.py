@@ -136,7 +136,7 @@ H_PARAMETERS = {
     "beam_width": 10,
     "beam_groups": 5,
     "dropout_rate": 0.5,
-    "use_v_dropout": True,
+    "use_variational_recurrent_dropout": True,
     "perc_epoch_for_training": 1.0,
     "early_stopping_stop_after": 5,
     "policy_coeff": 1.0,
