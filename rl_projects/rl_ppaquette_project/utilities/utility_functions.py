@@ -15,8 +15,8 @@ def pad_tensor(tensor: torch.tensor, axis: int, min_size: int, pad_value = 0):
     
     new_axis = axis if axis >= 0 else len(tensor.shape) + axis
     
-    assert new_axis >= 0 and new_axis <= len(tensor.shape) - 1, \
-    f"Tensor with shape {tensor.shape} got invalid shape index {axis}"
+    if new_axis > len(tensor.shape) - 1 or new_axis < 0:
+        raise ValueError(f"Tensor with shape {tensor.shape} got invalid shape index {axis}")
 
     # check whether the tensor axis is already >= min_size
     if tensor.shape[axis] >= min_size:
@@ -76,7 +76,7 @@ def decompress_dict(dict_bytes_string: str, numpy_arr_members: list = []):
     
     return dict_object
 
-def seeded_random(seeds: torch.tensor, shape: tuple, generator: torch.Generator = None):
+def seeded_random(seeds: torch.tensor, shape: list, generator: torch.Generator = None):
     """
     generates random tensors of uniform distribution from [0, 1)
     according to the array of seeds (same seeds generate the same tensor)
@@ -88,8 +88,12 @@ def seeded_random(seeds: torch.tensor, shape: tuple, generator: torch.Generator 
     
     Note #3: random states come from the pytorch random Generator,
     thus calling this function twice will provide different results
-    with the same behaviour
+    with the same behaviour.
+    If the generator argument is not passed, the default global pytorch random generator is used.
     """
+    # make a copy of the shape in order to not affect the reference list
+    shape = shape.copy()
+    
     # find non-zero element indicies
     non_zero_seed_indices = torch.nonzero(seeds)
     
@@ -113,7 +117,7 @@ def seeded_random(seeds: torch.tensor, shape: tuple, generator: torch.Generator 
         shape[0] = shape[0] - non_zero_seed_indices.shape[0]
         
         # add different random values for all zero seeds
-        mask[seeds == 0] = torch.rand(shape)
+        mask[seeds == 0] = torch.rand(shape, generator = generator)
         
     return mask
 
