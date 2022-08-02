@@ -81,15 +81,17 @@ class Encoder(torch.nn.Module):
             batch_size=self.h_params["batch_size"],
         )
 
-        # Creating order embedding vector (to embed order_ix)
-        self.order_embedding = torch.empty(
-            (ORDER_VOCABULARY_SIZE, self.h_params["order_emb_size"])
-        ).uniform_(-1, 1)
+        # Creating order embeddings matrix (to embed order_ix)
+        self.order_embedding = nn.Embedding(
+            ORDER_VOCABULARY_SIZE, self.h_params["order_emb_size"]
+        )
+        uniform_(self.order_embedding.weight, -1, 1)
 
-        # Creating candidate embedding
-        self.candidate_embedding = torch.empty(
-            (ORDER_VOCABULARY_SIZE, self.h_params["lstm_size"] + 1)
-        ).uniform_(-1, 1)
+        # Creating candidate embeddings matrix
+        self.candidate_embedding = nn.Embedding(
+            ORDER_VOCABULARY_SIZE, self.h_params["lstm_size"] + 1
+        )
+        uniform_(self.candidate_embedding.weight, -1, 1)
 
     def _preprocess_input(self, inputs: dict):
         """
@@ -136,7 +138,8 @@ class Encoder(torch.nn.Module):
 
         # Making sure all RNN lengths are at least 1
         # making a copy of original decoder lengths
-        raw_decoder_lengths = decoder_lengths.detach().clone()
+        # TODO: remember, that this previously used detach(). I removed it thinking it was useless
+        raw_decoder_lengths = decoder_lengths.clone()
         decoder_lengths = torch.maximum(torch.tensor(1), decoder_lengths)
 
         # Reshaping candidates
